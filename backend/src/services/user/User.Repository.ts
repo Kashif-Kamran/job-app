@@ -1,11 +1,10 @@
 import { BadRequestError, InternalServerError } from "../../core/ApiError";
-import { User, userModel } from "./User.Model";
+import { User, UserType, userModel } from "./User.Model";
 
-// This function handles saveing new user to database
-async function create(userInfo: User) {
+async function create(userInfo: UserType) {
   try {
-    const user = new userModel(userInfo);
-    await user.save();
+    let response = await userModel.create(userInfo);
+    return response;
   } catch (error: any) {
     throw new InternalServerError(
       "Error Occured While Saving User" + error.message
