@@ -2,7 +2,7 @@ import { Response } from "express";
 
 export enum httpStatusCodes {
   OK = 200,
-  CREATED = 201,
+  CREATED = 201, //✅
   ACCEPTED = 202,
   NO_CONTENT = 204,
   BAD_REQUEST = 400, //✅
@@ -44,6 +44,18 @@ abstract class ApiResponse {
 // Success Responses
 export class SuccessMessageResponse extends ApiResponse {
   constructor(message: string) {
+    super(httpStatusCodes.OK, message);
+  }
+}
+
+export class SuccessfullyCreatedResponse<T> extends ApiResponse {
+  constructor(message: string, private data: T) {
+    super(httpStatusCodes.CREATED, message);
+  }
+}
+
+export class SuccessResponse<T> extends ApiResponse {
+  constructor(message: string, private data: T) {
     super(httpStatusCodes.OK, message);
   }
 }

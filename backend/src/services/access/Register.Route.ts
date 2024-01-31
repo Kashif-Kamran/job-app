@@ -1,4 +1,8 @@
-import { SuccessMessageResponse } from "../../core/ApiResponse";
+import {
+  SuccessMessageResponse,
+  SuccessResponse,
+  SuccessfullyCreatedResponse,
+} from "../../core/ApiResponse";
 import { Router, Request, Response } from "express";
 import validator from "../../middlewares/Validator";
 import schema from "./Schema";
@@ -12,7 +16,9 @@ registerRouter.post(
   validator(schema.register),
   AsyncHandler(async (req: Request, res: Response) => {
     let result = await UserController.createUser(req.body);
-    new SuccessMessageResponse("User Created Successfully").send(res);
+    new SuccessfullyCreatedResponse("User Created Successfully", result).send(
+      res
+    );
   })
 );
 

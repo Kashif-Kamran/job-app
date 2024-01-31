@@ -8,8 +8,7 @@ type AsyncFunction = (
 
 export default (execution: AsyncFunction) =>
   (req: Request, res: Response, next: NextFunction) => {
-    execution(req, res, next).catch(() => {
-      console.log("Next Function");
-      next();
+    execution(req, res, next).catch((error) => {
+      next(error);
     });
   };
