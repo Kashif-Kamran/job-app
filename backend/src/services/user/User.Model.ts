@@ -23,4 +23,9 @@ class User {
 
 const userModel = getModelForClass(User);
 
-export { userModel, User };
+// Types
+type UserType = Pick<User, "name" | "email" | "password" | "role">;
+type UserDTO = Pick<UserType, "name" | "password" | "email"> & { role: string };
+type PartialUserDTO = Partial<UserType>;
+
+export { userModel, User, UserType, UserDTO, PartialUserDTO };
