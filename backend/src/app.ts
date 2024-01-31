@@ -1,6 +1,7 @@
 import express, { NextFunction, Request, Response } from "express";
 import dotenv from "dotenv";
 import routes from "./routes";
+import "./database";
 import { ApiError, InternalServerError } from "./core/ApiError";
 
 dotenv.config();

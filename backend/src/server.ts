@@ -4,6 +4,6 @@ import { port, environment } from "./config";
 
 app.listen(port, () => {
   console.log(
-    `Server started successfully on PORT : ${port} in ${environment} mode.`
+    `✅ Server started successfully on PORT : ${port} in ${environment} mode.`
   );
 });
