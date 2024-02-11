@@ -17,7 +17,10 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   if (err instanceof ApiError) {
     return ApiError.handle(err, res);
   }
-  console.log("❌ Error is not part of ApiError Class : ", err.message);
+  console.log("❌ Error is not part of ApiError Class : ");
+  console.log("Error Message : ", err.message);
+  console.log("Error Stack : ", err.stack);
+  console.log("--------");
   return ApiError.handle(new InternalServerError(err.message), res);
 });
 

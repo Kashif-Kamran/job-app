@@ -19,8 +19,7 @@ export enum httpStatusCodes {
 abstract class ApiResponse {
   constructor(
     protected httpStatus: httpStatusCodes,
-    protected message: string,
-    protected lengthOfData?: number
+    protected message: string
   ) {}
   protected prepare<T extends ApiResponse>(
     res: Response,
@@ -70,5 +69,11 @@ export class ValidationFailureResponse extends ApiResponse {
 export class InternalErrorResponse extends ApiResponse {
   constructor(message: string) {
     super(httpStatusCodes.INTERNAL_SERVER, message);
+  }
+}
+
+export class AuthenticationFailureResponse extends ApiResponse {
+  constructor(message: string = "Authentication Failed") {
+    super(httpStatusCodes.UNAUTHORIZED, message);
   }
 }

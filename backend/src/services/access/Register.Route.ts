@@ -1,3 +1,4 @@
+import _ from "lodash";
 import {
   SuccessMessageResponse,
   SuccessResponse,
@@ -16,7 +17,15 @@ registerRouter.post(
   validator(schema.register),
   AsyncHandler(async (req: Request, res: Response) => {
     let result = await UserController.createUser(req.body);
-    new SuccessfullyCreatedResponse("User Created Successfully", result).send(
+    let userData = _.pick(result, [
+      "name",
+      "email",
+      "role",
+      "_id",
+      "createdAt",
+    ]);
+    console.log("Accepted User Data : ", userData);
+    new SuccessfullyCreatedResponse("User Created Successfully", userData).send(
       res
     );
   })
