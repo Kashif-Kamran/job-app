@@ -1,4 +1,9 @@
-import { SuccessMessageResponse } from "../../core/ApiResponse";
+import _ from "lodash";
+import {
+  SuccessMessageResponse,
+  SuccessResponse,
+  SuccessfullyCreatedResponse,
+} from "../../core/ApiResponse";
 import { Router, Request, Response } from "express";
 import validator from "../../middlewares/Validator";
 import schema from "./Schema";
@@ -12,7 +17,17 @@ registerRouter.post(
   validator(schema.register),
   AsyncHandler(async (req: Request, res: Response) => {
     let result = await UserController.createUser(req.body);
-    new SuccessMessageResponse("User Created Successfully").send(res);
+    let userData = _.pick(result, [
+      "name",
+      "email",
+      "role",
+      "_id",
+      "createdAt",
+    ]);
+    console.log("Accepted User Data : ", userData);
+    new SuccessfullyCreatedResponse("User Created Successfully", userData).send(
+      res
+    );
   })
 );
 

@@ -1,11 +1,28 @@
-import { SuccessMessageResponse } from "../../core/ApiResponse";
+import {
+  SuccessMessageResponse,
+  SuccessResponse,
+} from "../../core/ApiResponse";
 import { Router, Request, Response } from "express";
-import { PublicRequest } from "../../types/app-request";
-
+import Validator from "../../middlewares/Validator";
+import Schema from "./Schema";
+import userController from "./../user/User.Controller";
+import AsyncHandler from "../../core/AsyncHandler";
 const router = Router();
 
-router.get("/", (req: PublicRequest, res: Response) => {
-  new SuccessMessageResponse("Successfully Hit Login Route").send(res);
-});
+router.get(
+  "/",
+  Validator(Schema.login),
+  AsyncHandler(async (req: Request, res: Response) => {
+    // Implement Login controller in user controller
+    let userLoginInfo = await userController.loginUser({
+      email: req.body.email,
+      password: req.body.password,
+    });
+    // Return Response
+    new SuccessResponse("Successfully Hit Login Route", userLoginInfo).send(
+      res
+    );
+  })
+);
 
 export default router;

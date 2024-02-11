@@ -1,12 +1,14 @@
 import {
   ValidationFailureResponse,
   InternalErrorResponse,
+  AuthenticationFailureResponse,
 } from "./ApiResponse";
 import { environment } from "../config";
 import { Response } from "express";
 export enum ErrorType {
   BAD_REQUEST = "BAD_REQUEST",
   INTERNAL_SERVER_ERROR = "INTERNAL_SERVER_ERROR",
+  TOKEN_EXPIRED = "TOKEN_EXPIRED",
 }
 
 //
@@ -23,6 +25,8 @@ export abstract class ApiError extends Error {
     switch (error.type) {
       case ErrorType.BAD_REQUEST:
         return new ValidationFailureResponse(error.message).send(res);
+      case ErrorType.TOKEN_EXPIRED:
+        return new AuthenticationFailureResponse(error.message).send(res);
       default:
         if (environment === "development") {
           return new InternalErrorResponse(error.message).send(res);

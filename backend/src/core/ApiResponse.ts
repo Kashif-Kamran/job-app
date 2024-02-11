@@ -2,7 +2,7 @@ import { Response } from "express";
 
 export enum httpStatusCodes {
   OK = 200,
-  CREATED = 201,
+  CREATED = 201, //✅
   ACCEPTED = 202,
   NO_CONTENT = 204,
   BAD_REQUEST = 400, //✅
@@ -19,8 +19,7 @@ export enum httpStatusCodes {
 abstract class ApiResponse {
   constructor(
     protected httpStatus: httpStatusCodes,
-    protected message: string,
-    protected lengthOfData?: number
+    protected message: string
   ) {}
   protected prepare<T extends ApiResponse>(
     res: Response,
@@ -48,6 +47,18 @@ export class SuccessMessageResponse extends ApiResponse {
   }
 }
 
+export class SuccessfullyCreatedResponse<T> extends ApiResponse {
+  constructor(message: string, private data: T) {
+    super(httpStatusCodes.CREATED, message);
+  }
+}
+
+export class SuccessResponse<T> extends ApiResponse {
+  constructor(message: string, private data: T) {
+    super(httpStatusCodes.OK, message);
+  }
+}
+
 // Failure Responses
 export class ValidationFailureResponse extends ApiResponse {
   constructor(message: string) {
@@ -58,5 +69,11 @@ export class ValidationFailureResponse extends ApiResponse {
 export class InternalErrorResponse extends ApiResponse {
   constructor(message: string) {
     super(httpStatusCodes.INTERNAL_SERVER, message);
+  }
+}
+
+export class AuthenticationFailureResponse extends ApiResponse {
+  constructor(message: string = "Authentication Failed") {
+    super(httpStatusCodes.UNAUTHORIZED, message);
   }
 }
