@@ -18,17 +18,17 @@ export function encode(payload: JwtPayload): string {
   return token;
 }
 
-export function validate(token: string): boolean {
+// This function is going to be used for validation
+export function validate(token: string) {
   try {
-    jwt.verify(token, tokenInfo.secrat);
-    return true;
-  } catch (error) {
-    return false;
-  }
+    return jwt.verify(token, tokenInfo.secrat);
+  } catch (error) {}
 }
 
 // This function will decode the token and return the payload
 export function decode(token: string): JwtPayload {
-  const decoded = jwt.verify(token, tokenInfo.secrat) as JwtPayload;
+  const decoded = jwt.verify(token, tokenInfo.secrat, {
+    ignoreExpiration: true,
+  }) as JwtPayload;
   return decoded;
 }
