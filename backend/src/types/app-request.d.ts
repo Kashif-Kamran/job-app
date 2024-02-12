@@ -1,5 +1,8 @@
-import { Request as ExpressRequest } from "express";
+import { Request } from "express";
+import { UserType } from "../services/user/User.Model";
+declare interface PublicRequest extends Request {}
 
-export class PublicRequest extends ExpressRequest {}
-
-export class ProtectedRequest extends PublicRequest {}
+declare interface ProtectedRequest extends PublicRequest {
+  user: UserType;
+  accessToken: string;
+}

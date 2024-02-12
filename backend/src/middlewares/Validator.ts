@@ -1,5 +1,4 @@
 import { BadRequestError } from "../core/ApiError";
-import { ValidationFailureResponse } from "../core/ApiResponse";
 import { Response, Request, NextFunction } from "express";
 import Joi from "joi";
 export enum ValidationSource {
@@ -25,8 +24,6 @@ export default (
     const { error } = schema.validate(req[source], { abortEarly: false }); // Abort early will check for all conditions
     if (!error) return next();
     const { details } = error;
-
-    console.log("Details ; ", details);
     const message = details
       .map((i: any) => i.message.replace(/['"]+/g, ""))
       .join(" | ");

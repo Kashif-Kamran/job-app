@@ -51,6 +51,7 @@ export default {
       authorization: JoiAuthBearer().required().messages({
         "any.invalid":
           "Invalid Autherization Header: Valid Bearer token required",
+        "any.required": "Bearer Token Not provided in Authorization Header",
       }),
     })
     .unknown(true),

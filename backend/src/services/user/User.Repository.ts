@@ -1,6 +1,7 @@
 import _ from "lodash";
 import { BadRequestError, InternalServerError } from "../../core/ApiError";
 import { UserDTO, UserType, userModel } from "./User.Model";
+import mongoose from "mongoose";
 // That function is use to get User Type
 function getUserType(userInfo: any): UserType | null {
   if (userInfo === null) return null;
@@ -36,7 +37,29 @@ async function getUserByEmail(email: string): Promise<UserType | null> {
   }
 }
 
+async function checkIfValidId(id: string) {
+  try {
+    if (mongoose.Types.ObjectId.isValid(id)) return true;
+    return false;
+  } catch (error) {
+    return false;
+  }
+}
+
+async function getUserById(id: string): Promise<UserType | null> {
+  try {
+    const user = await userModel.findById(id);
+    return getUserType(user);
+  } catch (error: any) {
+    throw new InternalServerError(
+      "Error Occured While Getting User By Id : " + error.message
+    );
+  }
+}
+
 export default {
   create,
   getUserByEmail,
+  checkIfValidId,
+  getUserById,
 };
