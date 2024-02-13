@@ -6,16 +6,18 @@ export enum httpStatusCodes {
   ACCEPTED = 202,
   NO_CONTENT = 204,
   BAD_REQUEST = 400, //✅
-  UNAUTHORIZED = 401,
+  UNAUTHORIZED = 401, // ✅
   FORBIDDEN = 403,
-  NOT_FOUND = 404,
+  NOT_FOUND = 404, //✅
   INTERNAL_SERVER = 500, //✅
   NOT_IMPLEMENTED = 501,
   BAD_GATEWAY = 502,
   SERVICE_UNAVAILABLE = 503,
   GATEWAY_TIMEOUT = 504,
 }
-
+/*
+ * ApiResponse is the base class for all custom responses
+ */
 abstract class ApiResponse {
   constructor(
     protected httpStatus: httpStatusCodes,
@@ -75,5 +77,11 @@ export class InternalErrorResponse extends ApiResponse {
 export class AuthenticationFailureResponse extends ApiResponse {
   constructor(message: string = "Authentication Failed") {
     super(httpStatusCodes.UNAUTHORIZED, message);
+  }
+}
+
+export class NotFoundResponse extends ApiResponse {
+  constructor(message: string = "Not Found") {
+    super(httpStatusCodes.NOT_FOUND, message);
   }
 }
