@@ -1,6 +1,6 @@
 import { Router, Response, NextFunction } from "express";
+import { ProtectedRequest } from "../../types/app-request";
 import AsyncHandler from "../../core/AsyncHandler";
-import { PublicRequest } from "../../types/app-request";
 import Validator, { ValidationSource } from "../../middlewares/Validator";
 import Schema from "./Schema";
 import { AuthFailureError } from "../../core/ApiError";
@@ -11,12 +11,13 @@ const router = Router();
 router.use(
   Validator(Schema.accessToken, ValidationSource.HEADER),
   AsyncHandler(
-    async (req: PublicRequest, res: Response, next: NextFunction) => {
+    async (req: ProtectedRequest, res: Response, next: NextFunction) => {
       const authorization = req.headers.authorization;
       const accessToken = getAccessToken(authorization);
       let payload = validate(accessToken);
       let user = await UserController.getUserById(payload.sub);
-      req.body.user = user;
+      req.user = user;
+      req.accessToken = accessToken;
       return next();
     }
   )

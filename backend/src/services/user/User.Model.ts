@@ -29,8 +29,11 @@ type UserDTO = Pick<UserType, "name" | "password" | "email"> & {
   role?: string;
   _id?: string;
 };
+
+type UserRO = Pick<UserType, "name" | "email" | "role" | "createdAt" | "_id">;
+
 type PartialUserDTO = Partial<
   Pick<UserType, "name" | "email" | "password" | "role">
 >;
 // exporting the model and types
-export { userModel, User, UserType, UserDTO, PartialUserDTO };
+export { userModel, User, UserType, UserDTO, PartialUserDTO, UserRO };

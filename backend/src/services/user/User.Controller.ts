@@ -1,6 +1,6 @@
 import { BadRequestError, NotFoundError } from "../../core/ApiError";
 import _ from "lodash";
-import { User, UserDTO, UserType } from "./User.Model";
+import { UserDTO, UserRO, UserType } from "./User.Model";
 import UserRepository from "./User.Repository";
 import bcrypt, { hash } from "bcrypt";
 import { JwtPayload, encode } from "../../core/JWT";
@@ -10,7 +10,7 @@ type LoginDTO = {
   password: string;
 };
 
-function getSanatizedUser(user: UserType) {
+function getSanatizedUser(user: UserType): UserRO {
   return _.pick(user, ["_id", "name", "email", "role", "createdAt"]);
 }
 
