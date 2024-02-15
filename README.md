@@ -11,7 +11,7 @@ The main folder contains the following structure:
 ## Technologies Used
 - TypeScript
 - (To be implemented in the future) Frontend Framework (React)
-- (To be implemented in the future) Backend Framework (Express.js)
+- (To be implemented in the future) Backend Framework (Express.ts)
 
 ## Installation and Setup
 1. Clone the repository to your local machine:
