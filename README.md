@@ -10,8 +10,8 @@ The main folder contains the following structure:
 
 ## Technologies Used
 - TypeScript
-- (To be implemented in the future) Frontend Framework (e.g., React, Angular, Vue.js)
-- (To be implemented in the future) Backend Framework (e.g., Express.js, Nest.js)
+- (To be implemented in the future) Frontend Framework (React)
+- (To be implemented in the future) Backend Framework (Express.js)
 
 ## Installation and Setup
 1. Clone the repository to your local machine:
