@@ -24,7 +24,6 @@ registerRouter.post(
       "_id",
       "createdAt",
     ]);
-    console.log("Accepted User Data : ", userData);
     new SuccessfullyCreatedResponse("User Created Successfully", userData).send(
       res
     );
