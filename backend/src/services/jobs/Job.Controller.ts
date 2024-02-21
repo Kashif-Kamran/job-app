@@ -1,21 +1,33 @@
+import { checkIfValidMongooseId } from "../share/MongooseUtils";
+import { NotFoundError } from "../../core/ApiError";
 import { JobDTO } from "./Job.Model";
 import jobsRepository from "./Job.Repository";
+import { UserRO } from "../user/User.Model";
 
-async function createJobForUser(jobInfo: JobDTO, userId: string) {
+async function createJobForUser(jobInfo: JobDTO, user: UserRO) {
   let currentDate = new Date();
   let lastDate = new Date(currentDate.setDate(currentDate.getDate() + 7));
   let newJobInfo = {
     ...jobInfo,
     publishedDate: new Date(),
     lastDate: lastDate,
-    userId: userId,
+    userId: user._id,
   };
   let jobCreated = await jobsRepository.createJob(newJobInfo);
   return jobCreated;
 }
 
-async function getJobsForUser(userId: string) {
-  let jobs = await jobsRepository.getJobsForUser(userId);
+async function getJobsForUser(user: UserRO) {
+  let jobs = await jobsRepository.getJobsForUser(user._id);
   return jobs;
 }
-export default { createJobForUser, getJobsForUser };
+
+async function getUserJobById(jobId: string, user: UserRO) {
+  if (!checkIfValidMongooseId(jobId)) throw new NotFoundError("Job Not Found");
+  let job = await jobsRepository.getJobById(jobId);
+  if (!job) throw new NotFoundError("Job Not Found");
+  if (job.userId.toString() !== user._id.toString())
+    throw new NotFoundError("Job Not Found");
+  return job;
+}
+export default { createJobForUser, getJobsForUser, getUserJobById };

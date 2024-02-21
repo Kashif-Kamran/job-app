@@ -18,6 +18,7 @@ function getJobTypeObject(jobResponseDb: any) {
     "positions",
     "publishedDate",
     "lastDate",
+    "userId",
   ]);
 }
 
@@ -40,4 +41,14 @@ async function getJobsForUser(userId: string) {
     );
   }
 }
-export default { createJob, getJobsForUser };
+async function getJobById(jobId: string) {
+  try {
+    let job = await jobModel.findOne({ _id: jobId });
+    return getJobTypeObject(job);
+  } catch (error) {
+    throw new InternalServerError(
+      `Error occured while getting job with id ${jobId}`
+    );
+  }
+}
+export default { createJob, getJobsForUser, getJobById };
