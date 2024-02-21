@@ -29,4 +29,15 @@ async function createJob(newJobInfo: JobType) {
     throw new InternalServerError("Error occured while creating job.");
   }
 }
-export default { createJob };
+
+async function getJobsForUser(userId: string) {
+  try {
+    let jobs = await jobModel.find({ userId: userId });
+    return jobs.map((job) => getJobTypeObject(job));
+  } catch (error) {
+    throw new InternalServerError(
+      `Error occured while getting jobs for user ${userId}`
+    );
+  }
+}
+export default { createJob, getJobsForUser };

@@ -52,7 +52,7 @@ async function getUserById(id: string) {
   if (!(await UserRepository.checkIfValidId(id)))
     throw new NotFoundError("User Not Found");
   let user = await UserRepository.getUserById(id);
-  if (!user) throw new BadRequestError("User Not Found");
+  if (!user) throw new NotFoundError("User Not Found");
   return getSanatizedUser(user);
 }
 export default {

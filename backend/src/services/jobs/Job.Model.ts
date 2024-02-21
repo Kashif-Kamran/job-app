@@ -1,4 +1,5 @@
 import { prop, getModelForClass } from "@typegoose/typegoose";
+import mongoose, { mongo } from "mongoose";
 class Job {
   @prop()
   title!: string;
@@ -26,6 +27,8 @@ class Job {
   publishedDate!: Date;
   @prop()
   lastDate!: Date;
+  @prop({ type: mongoose.Schema.Types.ObjectId, ref: "User" })
+  userId!: string;
 }
 
 const jobModel = getModelForClass(Job);
