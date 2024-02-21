@@ -1,5 +1,5 @@
 import Joi from "joi";
-
+import { JoiMongooseObjectId } from "../../middlewares/Validator";
 export default {
   postJob: Joi.object().keys({
     title: Joi.string().required().messages({
@@ -50,6 +50,12 @@ export default {
     }),
     lastDate: Joi.date().messages({
       "date.base": "Last Date must be a valid date formate",
+    }),
+  }),
+  getJobById: Joi.object().keys({
+    jobId: Joi.string().required().messages({
+      "string.empty": "Job Id cannot be an empty param",
+      "any.required": "Job Id is a required field",
     }),
   }),
 };

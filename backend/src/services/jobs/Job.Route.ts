@@ -1,4 +1,5 @@
 import { Router, Request, Response } from "express";
+import { ValidationSource } from "../../middlewares/Validator";
 import asyncHandler from "../../core/AsyncHandler";
 import { ProtectedRequest } from "../../types/app-request";
 import Validator from "../../middlewares/Validator";
@@ -23,7 +24,7 @@ jobRouter.post(
 
     let creationResponse = await jobsController.createJobForUser(
       req.body,
-      authUser._id
+      authUser
     );
 
     return new SuccessfullyCreatedResponse(
@@ -38,8 +39,19 @@ jobRouter.get(
   asyncHandler(async (req: ProtectedRequest, res: Response) => {
     if (!req.user) throw new AuthFailureError("User Not Authorized");
     let authUser = req.user;
-    let jobs = await jobsController.getJobsForUser(authUser._id);
+    let jobs = await jobsController.getJobsForUser(authUser);
     return new SuccessResponse("Success", jobs).send(res);
+  })
+);
+
+jobRouter.get(
+  "/:jobId",
+  Validator(schema.getJobById, ValidationSource.PARAM),
+  asyncHandler(async (req: ProtectedRequest, res: Response) => {
+    if (!req.user) throw new AuthFailureError("User Not Authorized");
+    let authUser = req.user;
+    let job = await jobsController.getUserJobById(req.params.jobId, authUser);
+    return new SuccessResponse("Success", job).send(res);
   })
 );
 export default jobRouter;

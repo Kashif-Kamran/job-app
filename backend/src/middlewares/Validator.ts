@@ -1,5 +1,6 @@
 import { BadRequestError } from "../core/ApiError";
 import { Response, Request, NextFunction } from "express";
+import mongoose from "mongoose";
 import Joi from "joi";
 export enum ValidationSource {
   BODY = "body",
@@ -14,6 +15,14 @@ export const JoiAuthBearer = () => {
     if (!value.split(" ")[1]) return helpers.error("any.invalid");
     return value;
   }, "Authorization Header Validation");
+};
+
+export const JoiMongooseObjectId = () => {
+  return Joi.string().custom((value: string, helpers) => {
+    if (!mongoose.Types.ObjectId.isValid(value))
+      return helpers.error("any.invalid");
+    return value;
+  }, "Object Id Validation");
 };
 
 export default (
