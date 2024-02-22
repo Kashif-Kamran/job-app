@@ -30,14 +30,13 @@ async function createUser(userInfo: UserDTO) {
 
 async function loginUser(userLoginInfo: LoginDTO) {
   const userByEmail = await UserRepository.getUserByEmail(userLoginInfo.email);
-  if (!userByEmail) throw new BadRequestError("Email did not match any record");
+  if (!userByEmail) throw new BadRequestError("Invalid email or password");
 
   const isValidUser = bcrypt.compareSync(
     userLoginInfo.password,
     userByEmail.password
   );
-  if (!isValidUser)
-    throw new BadRequestError("Password did not match with user password");
+  if (!isValidUser) throw new BadRequestError("Invalid email or password");
 
   // Create Access Token
   const accessToken = new JwtPayload(userByEmail._id, 5); // 5 minutes Token Expiry For Now
