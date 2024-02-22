@@ -9,10 +9,11 @@ const app = express();
 app.use(express.json());
 
 app.use("/api", routes);
+
 app.get("/health", (req, res) => {
   res.status(200).send("Server is up and running");
 });
-
+console.log("Dev : ", process.env.NODE_ENV);
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   if (err instanceof ApiError) {
     return ApiError.handle(err, res);

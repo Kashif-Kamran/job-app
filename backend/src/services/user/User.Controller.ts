@@ -16,7 +16,7 @@ function getSanatizedUser(user: UserType): UserRO {
 
 async function createUser(userInfo: UserDTO) {
   let userWithSameEmail = await UserRepository.getUserByEmail(userInfo.email);
-  if (userWithSameEmail) throw new BadRequestError("Email already exists");
+  if (userWithSameEmail) throw new BadRequestError("User already exists");
   if (!userInfo.role) userInfo.role = "user";
   const hashedPassword = await bcrypt.hash(userInfo.password, 10);
   let result = await UserRepository.create({
