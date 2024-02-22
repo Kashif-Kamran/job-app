@@ -5,9 +5,13 @@ export const tokenInfo = {
   accessTokenValidityDays: 7,
   secrat: "secrat_key_by_kashif_kamran",
 };
+let mongoUri = "mongodb://127.0.0.1:27017/job-app";
+if (process.env.NODE_ENV === "test")
+  mongoUri = "mongodb://127.0.0.1:27017/job-app-test";
+console.log("ENV : ", process.env.NODE_ENV, "URI : ", mongoUri);
 
 export const db = {
-  uri: process.env.MONGO_URI || "mongodb://127.0.0.1:27017/job-app",
+  uri: mongoUri,
   minPoolSize: 5,
   maxPoolSize: 10,
 };

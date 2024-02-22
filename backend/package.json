@@ -4,6 +4,7 @@
   "description": "",
   "main": "./dist/server.js",
   "scripts": {
+    "start:dev": "cross-env NODE_ENV=development npm run watch",
     "start": "npm run build && npm run serve",
     "serve": "node -r dotenv/config build/server.js",
     "build": "npm run clean && npm run build-ts",
@@ -14,7 +15,7 @@
     "watch-ts": "tsc -w",
     "eslint": "eslint . --ext .js,.ts",
     "upgrade": "npm update --save-dev && npm update --save",
-    "test": "cross-env NODE_ENV=test jest"
+    "test": "cross-env NODE_ENV=test jest --runInBand --forceExit"
   },
   "author": "",
   "license": "ISC",
