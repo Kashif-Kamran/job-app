@@ -8,7 +8,6 @@ export const tokenInfo = {
 let mongoUri = "mongodb://127.0.0.1:27017/job-app";
 if (process.env.NODE_ENV === "test")
   mongoUri = "mongodb://127.0.0.1:27017/job-app-test";
-console.log("ENV : ", process.env.NODE_ENV, "URI : ", mongoUri);
 
 export const db = {
   uri: mongoUri,

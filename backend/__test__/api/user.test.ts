@@ -1,5 +1,6 @@
 import request from "supertest";
 import app from "../../src/app";
+import e from "express";
 //  User Registration Test Suite
 describe("POST /api/access/register", () => {
   /*
@@ -46,7 +47,7 @@ describe("POST /api/access/register", () => {
   /*
    * Testing User Registration
    */
-  describe("given a valid user data", () => {
+  describe("Given a valid user data", () => {
     const mockUserObject = {
       name: "testuser",
       email: "test@gmail.com",
@@ -87,7 +88,6 @@ describe("POST /api/access/register", () => {
       const response = await request(app)
         .post("/api/access/register")
         .send(mockAdminObject);
-      console.log("Response ; ", response);
       // Then
       expect(response.status).toBe(201);
       expect(response.body.data).toHaveProperty("_id");
@@ -95,6 +95,85 @@ describe("POST /api/access/register", () => {
       expect(response.body.data).toHaveProperty("email", mockAdminObject.email);
       expect(response.body.data).toHaveProperty("role", "admin");
       expect(response.body.data).not.toHaveProperty("password");
+    });
+  });
+});
+/*
+ * Testing User Login
+ */
+
+describe("GET /api/access/login", () => {
+  describe("Given a invalid user data", () => {
+    const mockInvalidUserObject = {
+      email: "",
+      password: "testpassword",
+    };
+    it("should return a 400 status code as email is empty", async () => {
+      // When
+      const response = await request(app)
+        .get("/api/access/login")
+        .send(mockInvalidUserObject);
+      // Then
+      expect(response.status).toBe(400);
+    });
+
+    it("should return a 400 status code as password is empty", async () => {
+      mockInvalidUserObject.email = "test@gmail.com";
+      mockInvalidUserObject.password = "";
+      // When
+      const response = await request(app)
+        .get("/api/access/login")
+        .send(mockInvalidUserObject);
+      // Then
+      expect(response.status).toBe(400);
+    });
+  });
+
+  describe("Given a valid user data", () => {
+    const mockUserObject = {
+      name: "TestUserLoginValid",
+      email: "testuserloginvalid@gmail.com",
+      password: "testpassword",
+    };
+    it("should return a 200 status code", async () => {
+      // When
+      let response = await request(app)
+        .post("/api/access/register")
+        .send(mockUserObject);
+      // Then
+      let loginInfo = {
+        email: mockUserObject.email,
+        password: mockUserObject.password,
+      };
+      expect(response.status).toBe(201);
+      response = await request(app).get("/api/access/login").send(loginInfo);
+      // Then
+      expect(response.status).toBe(200);
+      expect(response.body.data).toHaveProperty("token");
+      expect(response.body.data).toHaveProperty("user");
+      expect(response.body.data.user).toHaveProperty("_id");
+      expect(response.body.data.user).toHaveProperty(
+        "name",
+        mockUserObject.name
+      );
+      expect(response.body.data.user).toHaveProperty(
+        "email",
+        mockUserObject.email
+      );
+    });
+
+    it("should return a 400 status code if the password is incorrect", async () => {
+      let loginInfo = {
+        email: mockUserObject.email,
+        password: "wrongpassword",
+      };
+      let res = await request(app)
+        .get("/api/access/login")
+        .send(loginInfo)
+        .expect(400);
+
+      expect(res.status).toBe(400);
+      expect(res.body.message).toBe("Invalid email or password");
     });
   });
 });
