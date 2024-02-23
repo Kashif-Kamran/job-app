@@ -1,11 +1,11 @@
 import { Router, Response, NextFunction } from "express";
-import { ProtectedRequest } from "../../types/app-request";
-import AsyncHandler from "../../core/AsyncHandler";
-import Validator, { ValidationSource } from "../../middlewares/Validator";
-import Schema from "./Schema";
-import { AuthFailureError } from "../../core/ApiError";
-import { validate } from "../../core/JWT";
-import UserController from "../user/User.Controller";
+import { ProtectedRequest } from "../types/app-request";
+import AsyncHandler from "../core/AsyncHandler";
+import Validator, { ValidationSource } from "./Validator";
+import Schema from "../services/access/Schema";
+import { AuthFailureError } from "../core/ApiError";
+import { validate } from "../core/JWT";
+import UserController from "../services/user/User.Controller";
 const router = Router();
 
 router.use(
