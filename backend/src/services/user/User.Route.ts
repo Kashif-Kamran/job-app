@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express";
 import AsyncHandler from "../../core/AsyncHandler";
-import authentication from "../access/authentication";
+import authentication from "../../middlewares/authentication";
 import { ProtectedRequest } from "../../types/app-request";
 import UserController from "./User.Controller";
 import { NotFoundError } from "../../core/ApiError";

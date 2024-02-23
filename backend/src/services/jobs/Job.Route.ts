@@ -9,8 +9,9 @@ import {
   SuccessResponse,
   SuccessfullyCreatedResponse,
 } from "../../core/ApiResponse";
-import authentication from "../access/authentication";
+import authentication from "../../middlewares/authentication";
 import { AuthFailureError } from "../../core/ApiError";
+import authrization from "../../middlewares/authorization";
 let jobRouter = Router();
 
 jobRouter.use(authentication);
@@ -18,9 +19,9 @@ jobRouter.use(authentication);
 jobRouter.post(
   "/",
   Validator(schema.postJob),
+  authrization(["admin"]),
   asyncHandler(async (req: ProtectedRequest, res: Response) => {
-    if (!req.user) throw new AuthFailureError("User Not Authorized");
-    let authUser = req.user;
+    let authUser = req.user!;
 
     let creationResponse = await jobsController.createJobForUser(
       req.body,
@@ -37,8 +38,7 @@ jobRouter.post(
 jobRouter.get(
   "/",
   asyncHandler(async (req: ProtectedRequest, res: Response) => {
-    if (!req.user) throw new AuthFailureError("User Not Authorized");
-    let authUser = req.user;
+    let authUser = req.user!;
     let jobs = await jobsController.getJobsForUser(authUser);
     return new SuccessResponse("Success", jobs).send(res);
   })
@@ -48,8 +48,7 @@ jobRouter.get(
   "/:jobId",
   Validator(schema.getJobById, ValidationSource.PARAM),
   asyncHandler(async (req: ProtectedRequest, res: Response) => {
-    if (!req.user) throw new AuthFailureError("User Not Authorized");
-    let authUser = req.user;
+    let authUser = req.user!;
     let job = await jobsController.getUserJobById(req.params.jobId, authUser);
     return new SuccessResponse("Success", job).send(res);
   })
