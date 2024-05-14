@@ -39,8 +39,8 @@ async function loginUser(userLoginInfo: LoginDTO) {
   if (!isValidUser) throw new BadRequestError("Invalid email or password");
 
   // Create Access Token
-  const accessToken = new JwtPayload(userByEmail._id, 5); // 5 minutes Token Expiry For Now
-  const token = encode(accessToken);
+  const jwtPayload = new JwtPayload(userByEmail._id, 5); // 5 minutes Token Expiry For Now
+  const token = encode(jwtPayload);
   return {
     token: token,
     user: getSanatizedUser(userByEmail),

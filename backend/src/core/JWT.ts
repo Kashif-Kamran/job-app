@@ -15,6 +15,9 @@ export class JwtPayload {
     this.iat = Math.floor(Date.now() / 1000);
     this.exp = this.iat + expiresInDays * 60 * 60 * 24;
   }
+  getExpiration() {
+    return this.exp;
+  }
 }
 
 // Function that will encode the jwt token

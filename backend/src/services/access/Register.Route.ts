@@ -1,9 +1,5 @@
 import _ from "lodash";
-import {
-  SuccessMessageResponse,
-  SuccessResponse,
-  SuccessfullyCreatedResponse,
-} from "../../core/ApiResponse";
+import { SuccessfullyCreatedResponse } from "../../core/ApiResponse";
 import { Router, Request, Response } from "express";
 import validator from "../../middlewares/Validator";
 import schema from "./Schema";
